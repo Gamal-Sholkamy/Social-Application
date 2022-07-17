@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:social_application/cubits/homeLayoutCubit/cubit.dart';
+import 'package:social_application/cubits/homeLayoutCubit/states.dart';
+import 'package:social_application/models/user_model.dart';
 import 'package:social_application/screens/new_post/newPost.dart';
 
 class FeedsScreen extends StatelessWidget {
@@ -7,64 +11,71 @@ class FeedsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              alignment: AlignmentDirectional.bottomCenter,
-              children: [
-                const Card(
-                  elevation: 8.0,
-                  margin: EdgeInsets.all(8),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: Image(
-                    image: AssetImage("assets/images/3.jpg"),
-                    fit: BoxFit.cover,
-                    height: 200.0,
-                    width: double.infinity,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("Communicate with your friends",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(color: Colors.lightBlue)),
-                ),
-              ],
-            ),
-            ListView.separated(
-              physics:const NeverScrollableScrollPhysics() ,
-              shrinkWrap: true,
-                itemBuilder: (context,index)=>buildPostItem(context),
-                separatorBuilder: (context,index)=>const SizedBox(height: 8,),
-                itemCount: 10)
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>const NewPostScreen()));
-        },
-        child: const Icon(Icons.add_comment_rounded),
-      ),
+    return BlocConsumer<HomeLayoutCubit,HomeLayoutStates>(
+         listener: (context,state){},
+         builder: (context,state){
+           final HomeLayoutCubit homeLayoutCubit=HomeLayoutCubit.get(context);
+           final UserModel? model=homeLayoutCubit.model;
+           return Scaffold(
+             body: SingleChildScrollView(
+               child: Column(
+                 children: [
+                   Stack(
+                     alignment: AlignmentDirectional.bottomCenter,
+                     children: [
+                        Card(
+                         elevation: 8.0,
+                         margin: EdgeInsets.all(8),
+                         clipBehavior: Clip.antiAliasWithSaveLayer,
+                         child: Image(
+                           image: NetworkImage("${model?.cover}"),
+                           fit: BoxFit.cover,
+                           height: 200.0,
+                           width: double.infinity,
+                         ),
+                       ),
+                       Padding(
+                         padding: const EdgeInsets.all(8.0),
+                         child: Text("Communicate with your friends",
+                             style: Theme.of(context)
+                                 .textTheme
+                                 .bodyMedium
+                                 ?.copyWith(color: Colors.lightBlue)),
+                       ),
+                     ],
+                   ),
+                   ListView.separated(
+                       physics:const NeverScrollableScrollPhysics() ,
+                       shrinkWrap: true,
+                       itemBuilder: (context,index)=>buildPostItem(context,model!),
+                       separatorBuilder: (context,index)=>const SizedBox(height: 8,),
+                       itemCount: 10)
+                 ],
+               ),
+             ),
+             floatingActionButton: FloatingActionButton(
+               onPressed: (){
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>const NewPostScreen()));
+               },
+               child: const Icon(Icons.add_comment_rounded),
+             ),
+           );
+         },
     );
   }
 
 
-  Widget buildPostItem(context)=>Card (
+  Widget buildPostItem(context,UserModel model )=>Card (
     elevation: 2.0,
-    margin: const EdgeInsets.symmetric(horizontal: 8),
+    margin: const EdgeInsets.symmetric(horizontal: 3),
     clipBehavior: Clip.antiAliasWithSaveLayer,
     child: Column(
       children: [
         Row(
           children: [
-            const CircleAvatar(
+             CircleAvatar(
               radius: 30,
-              backgroundImage: AssetImage("assets/images/1.jpg"),
+              backgroundImage: NetworkImage("${model?.image}"),
               //child: Image(image: AssetImage("assets/images/6.jpg"),)
             ),
             const SizedBox(
@@ -76,7 +87,7 @@ class FeedsScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "Gamal Sholkamy",
+                      "${model?.name}",
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1
@@ -208,10 +219,10 @@ class FeedsScreen extends StatelessWidget {
             ],
           ),
         ),
-        const Card(
+         Card(
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Image(
-            image: AssetImage("assets/images/2.jpg"),
+            image: NetworkImage("${model?.image}"),
           ),
         ),
         Row(
@@ -224,29 +235,13 @@ class FeedsScreen extends StatelessWidget {
           ],
         ),
         const SizedBox(
-          height: 5,
+          height: 10,
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-           Row(
-             crossAxisAlignment: CrossAxisAlignment.center,
-             children: [
-               const CircleAvatar(radius:16,
-                 backgroundImage: AssetImage("assets/images/7.jpg"),),
-               const SizedBox(width: 5,),
-               InkWell(
-                 child: Container(
-                     width: 120,
-                     height: 40,
-                     child: const Text("write a comment",style: TextStyle(fontSize: 16),)
-                 ),
-               ),
-             ],
-           ),
+
+           
             Row(
               children: [
-                const SizedBox(width: 10,),
+
                 InkWell(
                   onTap: (){},
                   child: Row(
@@ -256,7 +251,17 @@ class FeedsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: 30,),
+                const Spacer(),
+                InkWell(
+                  onTap: (){},
+                  child: Row(
+                    children: const[
+                      Icon(Icons.add_comment),
+                      Text("comment"),
+                    ],
+                  ),
+                ),
+                const Spacer(),
                 InkWell(
                   onTap: (){},
                   child: Row(
@@ -268,8 +273,7 @@ class FeedsScreen extends StatelessWidget {
                 ),
               ],
             )
-          ],
-        ),
+
       ],
     ),
   );

@@ -34,7 +34,7 @@ class SettingsScreen extends StatelessWidget{
                               topRight: Radius.circular(12),
                             ),
                             image: DecorationImage(
-                                image:AssetImage("${model?.cover}"),
+                                image:NetworkImage("${model?.cover}"),
                                 fit: BoxFit.cover),
                           ),
                         ),
@@ -44,7 +44,7 @@ class SettingsScreen extends StatelessWidget{
                         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                         child:  CircleAvatar(
                           radius: 40,
-                          backgroundImage: AssetImage("${model?.image}"),
+                          backgroundImage: NetworkImage("${model?.image}"),
                           //child: Image(image: AssetImage("assets/images/6.jpg"),)
                         ),
                       ),

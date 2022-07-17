@@ -14,9 +14,9 @@ void main() async {
   await Firebase.initializeApp();
   await CacheHelper.init();
   Widget startWidget;
-  var userID = CacheHelper.getData(key: "userID");
+  String? userID = CacheHelper.getData(key: "userID");
   if (userID != null) {
-    startWidget = HomeLayout();
+    startWidget = const HomeLayout();
   } else {
     startWidget = const LoginScreen();
   }
@@ -25,9 +25,9 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // const MyApp({Key? key}) : super(key: key,widget:widget);
-  Widget widget;
+  Widget startWidget;
 
-  MyApp(this.widget);
+  MyApp(this.startWidget);
 
   // This widget is the root of your application.
   @override
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           darkTheme: darkTheme,
           themeMode: ThemeMode.light,
           debugShowCheckedModeBanner: false,
-          home: const LoginScreen(),
+          home:startWidget ,
         ));
   }
 }

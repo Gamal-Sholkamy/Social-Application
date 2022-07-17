@@ -1,7 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_application/cubits/registerCubit/cubit.dart';
 import 'package:social_application/cubits/registerCubit/states.dart';
+import 'package:social_application/network/cache_helper.dart';
+import 'package:social_application/network/end_points.dart';
+import 'package:social_application/screens/home_layout/homeLayout.dart';
+import '../../network/end_points.dart';
+
 
 
 class RegisterScreen extends StatefulWidget{
@@ -35,25 +43,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return BlocProvider(create: (BuildContext context)=>RegisterCubit(),
           child:  BlocConsumer<RegisterCubit,RegisterStates>(
             listener: (context ,state){
-              // if (state is RegisterSuccessState){
-              //   if(state.registerModel.status!){
+              if(state is RegisterCreateUserSuccessState){
+                CacheHelper.saveData(
+                    key: "userID",
+                    value: state.userID)
+                    .then((value) {
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> HomeLayout()), (route) => false);
+
+                });
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomeLayout()), (route) => false);
+              }
+              // if(state is! RegisterSuccessState){
+              //   if (state is RegisterErrorState){
               //     Fluttertoast.showToast(
-              //         msg: '${state.registerModel.message}',
+              //         msg: "unable to make registration",
               //         toastLength: Toast.LENGTH_LONG,
               //         gravity: ToastGravity.BOTTOM,
               //         timeInSecForIosWeb: 2,
               //         backgroundColor: Colors.green,
               //         textColor: Colors.white,
               //         fontSize: 16.0
+              //
               //     );
-              //     CacheHelper.saveData(key: 'token', value: state.registerModel.data!.token!).then((value) => {
-              //     token=state.registerModel.data!.token!,
-              //     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const HomeLayoutScreen()), (route) => false),
-              //     });
-              //   }}
+              //   }
+              //   else{
+              //     Fluttertoast.showToast(
+              //         msg: "Register Successfully",
+              //         toastLength: Toast.LENGTH_LONG,
+              //         gravity: ToastGravity.BOTTOM,
+              //         timeInSecForIosWeb: 2,
+              //         backgroundColor: Colors.green,
+              //         textColor: Colors.white,
+              //         fontSize: 16.0
+              //
+              //     );
+              //   }
+              // }
               },
-
-
             builder: (context,state){
               RegisterCubit registerCubit=RegisterCubit.get(context);
               return   Scaffold(
@@ -195,6 +221,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     password: passwordController.text,
                                     phone: phoneController.text
                                 );
+
+
                               }
                             },
                             child: Text(

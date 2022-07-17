@@ -14,3 +14,11 @@ class RegisterErrorState extends RegisterStates{
 
 }
 class RegisterChangePasswordIconState extends RegisterStates{}
+class RegisterCreateUserSuccessState extends RegisterStates{
+  final String userID;
+  RegisterCreateUserSuccessState(this.userID);
+}
+class RegisterCreateUserErrorState extends RegisterStates{
+  final String error;
+  RegisterCreateUserErrorState(this.error);
+}

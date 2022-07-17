@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_application/cubits/loginCubit/cubit.dart';
 import 'package:social_application/cubits/loginCubit/states.dart';
+import 'package:social_application/network/cache_helper.dart';
+import 'package:social_application/screens/home_layout/homeLayout.dart';
 import 'package:social_application/screens/register/register_screen.dart';
 
 class LoginScreen extends StatefulWidget{
@@ -31,18 +33,36 @@ class _LoginScreenState extends State<LoginScreen> {
      appBar: AppBar(),
      body: BlocConsumer<LoginCubit,LoginStates>(
        listener: (context, state) {
-         if (state is LoginSuccessState) {
+         if (state is  LoginSuccessState) {
            //todo: navigate to home screen
-           if(state is LoginErrorState){
-             Fluttertoast.showToast(
-                 msg: 'unable to login',
-                 toastLength: Toast.LENGTH_LONG,
-                 gravity: ToastGravity.BOTTOM,
-                 timeInSecForIosWeb: 2,
-                 backgroundColor: Colors.green,
-                 textColor: Colors.white,
-                 fontSize: 16.0
-             );
+           CacheHelper.saveData(
+               key: "userID",
+               value: state.userID)
+               .then((value) {
+             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> HomeLayout()), (route) => false);
+
+           });
+           Fluttertoast.showToast(
+               msg: 'login successfully',
+               toastLength: Toast.LENGTH_LONG,
+               gravity: ToastGravity.BOTTOM,
+               timeInSecForIosWeb: 2,
+               backgroundColor: Colors.red,
+               textColor: Colors.white,
+               fontSize: 16.0
+           );
+
+            }
+           else{
+             // Fluttertoast.showToast(
+             //     msg: 'unable to login',
+             //     toastLength: Toast.LENGTH_LONG,
+             //     gravity: ToastGravity.BOTTOM,
+             //     timeInSecForIosWeb: 2,
+             //     backgroundColor: Colors.green,
+             //     textColor: Colors.white,
+             //     fontSize: 16.0
+             // );
              // CacheHelper.saveData(key: 'token', value: state.loginModel.data?.token).then((value) {
              //   token=state.loginModel.data!.token!;
              //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const HomeLayoutScreen()), (route) => false);
@@ -50,18 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
              //Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
            }
-           else {
-             Fluttertoast.showToast(
-                 msg: 'login successfully',
-                 toastLength: Toast.LENGTH_LONG,
-                 gravity: ToastGravity.BOTTOM,
-                 timeInSecForIosWeb: 2,
-                 backgroundColor: Colors.red,
-                 textColor: Colors.white,
-                 fontSize: 16.0
-             );
-           }
-         }
+
+
 
        },
        builder: (context, state) {
@@ -73,9 +83,11 @@ class _LoginScreenState extends State<LoginScreen> {
                key: formKey,
                child: Center(
                  child: Column(
-                   mainAxisAlignment: MainAxisAlignment.center,
+                   mainAxisAlignment: MainAxisAlignment.start,
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
+                     const SizedBox(
+                       height: 30,),
                      Text("Login",
                          style: Theme.of(context)
                              .textTheme
@@ -116,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                      ),
                      TextFormField(
                        controller: passwordController,
-                       keyboardType: TextInputType.emailAddress,
+                       keyboardType: TextInputType.text,
                        validator: (value) {
                          if (value!.isEmpty) {
                            return "password is too short";

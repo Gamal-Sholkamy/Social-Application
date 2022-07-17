@@ -6,8 +6,8 @@ class LoginChangePasswordIcon extends LoginStates{}
 
 class LoginLoadingState extends LoginStates{}
 class LoginSuccessState extends LoginStates{
-  // final LoginModel loginModel;
-  // LoginSuccessState(this.loginModel);
+  final String userID;
+  LoginSuccessState(this.userID);
 
 }
 class LoginErrorState extends LoginStates{

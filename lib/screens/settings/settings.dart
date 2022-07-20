@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_application/cubits/homeLayoutCubit/cubit.dart';
 import 'package:social_application/cubits/homeLayoutCubit/states.dart';
 import 'package:social_application/models/user_model.dart';
+import 'package:social_application/screens/edit_profile/editProfile.dart';
 
 
 class SettingsScreen extends StatelessWidget{
@@ -13,7 +14,7 @@ class SettingsScreen extends StatelessWidget{
     return BlocConsumer<HomeLayoutCubit,HomeLayoutStates>(
         listener: (context,state){},
         builder: (context,state){
-          final UserModel? model=HomeLayoutCubit.get(context).model;
+          final UserModel? model=HomeLayoutCubit.get(context).userModel;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -95,9 +96,9 @@ class SettingsScreen extends StatelessWidget{
                         child: Column(
                           children: [
                             Text(
-                              "9",style: Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 16),),
+                              "684",style: Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 16),),
                             Text(
-                              "Videos",style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 16),),
+                              "Friends",style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 16),),
                           ],
                         ),
                         onTap: (){},
@@ -109,9 +110,9 @@ class SettingsScreen extends StatelessWidget{
                         child: Column(
                           children: [
                             Text(
-                              "215",style: Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 16),),
+                              "10254",style: Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 16),),
                             Text(
-                              "Story",style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 16),),
+                              "Followers",style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 16),),
                           ],
                         ),
                         onTap: (){},
@@ -131,8 +132,10 @@ class SettingsScreen extends StatelessWidget{
                         "Add Photo",style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).primaryColor),), ),),
                     const SizedBox(width: 10,),
                     OutlinedButton(
-                      onPressed: (){},
-                      child: const Icon(Icons.add_a_photo)),
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfileScreen()));
+                      },
+                      child: const Icon(Icons.mode_edit_outlined)),
                   ],
                 ),
 

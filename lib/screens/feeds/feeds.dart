@@ -15,7 +15,7 @@ class FeedsScreen extends StatelessWidget {
          listener: (context,state){},
          builder: (context,state){
            final HomeLayoutCubit homeLayoutCubit=HomeLayoutCubit.get(context);
-           final UserModel? model=homeLayoutCubit.model;
+           final UserModel? model=homeLayoutCubit.userModel;
            return Scaffold(
              body: SingleChildScrollView(
                child: Column(
@@ -57,7 +57,7 @@ class FeedsScreen extends StatelessWidget {
                onPressed: (){
                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const NewPostScreen()));
                },
-               child: const Icon(Icons.add_comment_rounded),
+               child:  Icon(Icons.add_comment_rounded,color: Theme.of(context).scaffoldBackgroundColor,),
              ),
            );
          },
@@ -75,7 +75,7 @@ class FeedsScreen extends StatelessWidget {
           children: [
              CircleAvatar(
               radius: 30,
-              backgroundImage: NetworkImage("${model?.image}"),
+              backgroundImage: NetworkImage("${model.image}"),
               //child: Image(image: AssetImage("assets/images/6.jpg"),)
             ),
             const SizedBox(
@@ -87,11 +87,11 @@ class FeedsScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "${model?.name}",
+                      "${model.name}",
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1
-                          ?.copyWith(fontSize: 20),
+                          ?.copyWith(fontSize: 19),
                     ),
                     const SizedBox(
                       width: 10,
@@ -107,7 +107,7 @@ class FeedsScreen extends StatelessWidget {
                   children: [
 
                     Text(
-                      DateFormat.MMMd().format(DateTime.now()!),
+                      DateFormat.MMMd().format(DateTime.now()),
                       style: const TextStyle(
                           fontSize: 14, color: Colors.grey),
                       maxLines: 1,
@@ -142,6 +142,7 @@ class FeedsScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.start,
             spacing: 3,
             children: [
               Container(
@@ -156,6 +157,7 @@ class FeedsScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
               Container(
                 height: 25,
                 child: MaterialButton(
@@ -168,71 +170,27 @@ class FeedsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                height: 25,
-                child: MaterialButton(
-                  onPressed: () {},
-                  minWidth: 1,
-                  padding: EdgeInsets.zero,
-                  child: const Text(
-                    "#Flutter_Developer",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ),
-              ),
-              Container(
-                height: 25,
-                child: MaterialButton(
-                  onPressed: () {},
-                  minWidth: 1,
-                  padding: EdgeInsets.zero,
-                  child: const Text(
-                    "#SoftWare",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ),
-              ),
-              Container(
-                height: 25,
-                child: MaterialButton(
-                  onPressed: () {},
-                  minWidth: 1,
-                  padding: EdgeInsets.zero,
-                  child: const Text(
-                    "#Mobile_Developer",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ),
-              ),
-              Container(
-                height: 25,
-                child: MaterialButton(
-                  onPressed: () {},
-                  minWidth: 1,
-                  padding: EdgeInsets.zero,
-                  child: const Text(
-                    "#Flutter_Developer",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ),
-              ),
+
             ],
           ),
         ),
          Card(
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Image(
-            image: NetworkImage("${model?.image}"),
+            image: NetworkImage("${model.image}"),
           ),
         ),
-        Row(
-          children: const [
-            Icon(Icons.favorite_outline),
-            Text("1450"),
-            Spacer(),
-            Icon(Icons.comment),
-            Text("320 comments"),
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Row(
+            children: const [
+              Icon(Icons.favorite_outline),
+              Text("1450"),
+              Spacer(),
+              Icon(Icons.comment),
+              Text("320 "),
+            ],
+          ),
         ),
         const SizedBox(
           height: 10,
@@ -256,7 +214,7 @@ class FeedsScreen extends StatelessWidget {
                   onTap: (){},
                   child: Row(
                     children: const[
-                      Icon(Icons.add_comment),
+                      Icon(Icons.add_comment_rounded),
                       Text("comment"),
                     ],
                   ),

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_application/cubits/editProfileCubit/cubit.dart';
 import 'package:social_application/cubits/homeLayoutCubit/cubit.dart';
 import 'package:social_application/cubits/loginCubit/cubit.dart';
 import 'package:social_application/network/cache_helper.dart';
@@ -35,9 +36,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (BuildContext context) => LoginCubit()),
-          BlocProvider(
-              create: (BuildContext context) =>
-                  HomeLayoutCubit()..getUserData()),
+          BlocProvider(create: (BuildContext context) => HomeLayoutCubit()..getUserData()),
+
         ],
         child: MaterialApp(
           theme: lightTheme,

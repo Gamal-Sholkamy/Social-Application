@@ -19,7 +19,7 @@ class HomeLayout extends StatelessWidget{
        },
       builder: (context,state){
         final HomeLayoutCubit homeLayoutCubit=HomeLayoutCubit.get(context);
-        UserModel? model=homeLayoutCubit.model ;
+        UserModel? model=homeLayoutCubit.userModel ;
          return Scaffold(
            appBar: AppBar(
              title: Text(homeLayoutCubit.titles[homeLayoutCubit.currentIndex],style: Theme.of(context).textTheme.bodyText1,),

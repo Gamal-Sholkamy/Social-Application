@@ -15,13 +15,13 @@ class HomeLayoutCubit extends Cubit<HomeLayoutStates> {
 
   static HomeLayoutCubit get(context) => BlocProvider.of(context);
 //////
-UserModel? model;
+UserModel? userModel;
 void getUserData(){
   emit(HomeLayoutLoadingState());
   FirebaseFirestore.instance.collection('users').doc(userID).get().
   then((value) {
     //print('${value.data()}');
-      model=UserModel.fromJson(value.data()!);
+      userModel=UserModel.fromJson(value.data()!);
     emit(HomeLayoutGetUserSuccessState());
   }).
   catchError((e){

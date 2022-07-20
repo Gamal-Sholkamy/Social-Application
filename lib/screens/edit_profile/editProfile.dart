@@ -18,198 +18,210 @@ class EditProfileScreen extends StatelessWidget{
     child: BlocConsumer<EditProfileCubit,EditProfileStates>(
       listener: (context,state){},
       builder: (context,state){
-        final EditProfileCubit editProfileCubit=EditProfileCubit.get(context);
-        UserModel model=editProfileCubit.userModel!;
-        var profileImage=editProfileCubit.profileImage;
-        var coverImage=editProfileCubit.coverImage;
-        _nameController.text=editProfileCubit.userModel!.name!;
-        _phoneController.text=editProfileCubit.userModel!.phone!;
-        _bioController.text=editProfileCubit.userModel!.bio!;
+        /// Case 1
+        if (state is EditProfileGetUserSuccessState){
+          final EditProfileCubit editProfileCubit=EditProfileCubit.get(context);
+          UserModel model=editProfileCubit.userModel!;
+          var profileImage=editProfileCubit.profileImage;
+          var coverImage=editProfileCubit.coverImage;
+          _nameController.text=editProfileCubit.userModel!.name!;
+          _phoneController.text=editProfileCubit.userModel!.phone!;
+          _bioController.text=editProfileCubit.userModel!.bio!;
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text("Edit Profile",style: Theme.of(context).textTheme.bodyText1,),
-            actions: [
-              TextButton(
-                  onPressed: (){
-                    editProfileCubit.updateUser(name: _nameController.text, phone: _phoneController.text, bio: _bioController.text);
-                  },
-                  child: Text("Update",style:Theme.of(context).textTheme.bodyMedium ,) ),
-              const SizedBox(width: 10,)
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  if(state is EditProfileUpdateUserLoadingState)
-                    const LinearProgressIndicator(),
-                  if(state is EditProfileUpdateUserLoadingState)
-                    const SizedBox(height: 10,),
-                  Container(
-                    height: 190,
-                    child: Stack(
-                      alignment: AlignmentDirectional.bottomCenter,
-                      children: [
-                        Align(
-                          alignment: AlignmentDirectional.topCenter,
-                          child: Stack(
-                            alignment: AlignmentDirectional.topEnd,
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: 160,
-                                decoration:  BoxDecoration(
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(12),
-                                    topRight: Radius.circular(12),
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Edit Profile",style: Theme.of(context).textTheme.bodyText1,),
+              actions: [
+                TextButton(
+                    onPressed: (){
+                      editProfileCubit.updateUser(name: _nameController.text, phone: _phoneController.text, bio: _bioController.text);
+                    },
+                    child: Text("Update",style:Theme.of(context).textTheme.bodyMedium ,) ),
+                const SizedBox(width: 10,)
+              ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    if(state is EditProfileUpdateUserLoadingState)
+                      const LinearProgressIndicator(),
+                    if(state is EditProfileUpdateUserLoadingState)
+                      const SizedBox(height: 10,),
+                    Container(
+                      height: 190,
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomCenter,
+                        children: [
+                          Align(
+                            alignment: AlignmentDirectional.topCenter,
+                            child: Stack(
+                              alignment: AlignmentDirectional.topEnd,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: 160,
+                                  decoration:  BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(12),
+                                      topRight: Radius.circular(12),
+                                    ),
+                                    image: DecorationImage(
+                                        image:NetworkImage("${model?.cover}"),
+                                        //coverImage==null? NetworkImage("${model?.cover}"): FileImage(coverImage),
+                                        fit: BoxFit.cover),
                                   ),
-                                  image: DecorationImage(
-                                      image:NetworkImage("${model?.cover}"),
-                                      //coverImage==null? NetworkImage("${model?.cover}"): FileImage(coverImage),
-                                      fit: BoxFit.cover),
+                                ),
+                                IconButton(
+                                    onPressed: (){
+                                      editProfileCubit.getCoverImage();
+                                    },
+                                    icon: const CircleAvatar(
+                                        radius: 20,
+                                        child:  Icon(Icons.camera_enhance_rounded,size: 16,))),
+                              ],
+                            ),
+                          ),
+                          Stack(
+                            alignment: AlignmentDirectional.bottomEnd,
+                            children: [
+                              CircleAvatar(
+                                radius: 42,
+                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                child:  CircleAvatar(
+                                  radius: 40,
+                                  backgroundImage:NetworkImage("${model?.image}"),
+                                  //profileImage ==null ?NetworkImage("${model?.image}"):FileImage(profileImage),
+
                                 ),
                               ),
                               IconButton(
                                   onPressed: (){
-                                    editProfileCubit.getCoverImage();
+                                    editProfileCubit.getProfileImage();
                                   },
                                   icon: const CircleAvatar(
                                       radius: 20,
                                       child:  Icon(Icons.camera_enhance_rounded,size: 16,))),
                             ],
                           ),
-                        ),
-                        Stack(
-                          alignment: AlignmentDirectional.bottomEnd,
-                          children: [
-                            CircleAvatar(
-                              radius: 42,
-                              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                              child:  CircleAvatar(
-                                radius: 40,
-                                backgroundImage:NetworkImage("${model?.image}"),
-                                //profileImage ==null ?NetworkImage("${model?.image}"):FileImage(profileImage),
-
+                        ],
+                      ),
+                    ),
+                    if(editProfileCubit.profileImage !=null || editProfileCubit.coverImage !=null)
+                      Row(
+                        children: [
+                          if(editProfileCubit.profileImage !=null)
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  OutlinedButton(
+                                      onPressed: (){
+                                        editProfileCubit.uploadProfileImage(name: _nameController.text, phone: _phoneController.text, bio: _bioController.text);
+                                      }, child: const Text("UPLOAD PROFILE")),
+                                  const SizedBox(
+                                    height: 5,),
+                                  const LinearProgressIndicator(),
+                                ],
                               ),
                             ),
-                            IconButton(
-                                onPressed: (){
-                                  editProfileCubit.getProfileImage();
-                                },
-                                icon: const CircleAvatar(
-                                    radius: 20,
-                                    child:  Icon(Icons.camera_enhance_rounded,size: 16,))),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  if(editProfileCubit.profileImage !=null || editProfileCubit.coverImage !=null)
-                    Row(
-                      children: [
-                        if(editProfileCubit.profileImage !=null)
-                          Expanded(
-                            child: Column(
-                              children: [
-                                OutlinedButton(
-                                    onPressed: (){
-                                      editProfileCubit.uploadProfileImage(name: _nameController.text, phone: _phoneController.text, bio: _bioController.text);
-                                    }, child: const Text("UPLOAD PROFILE")),
-                                const SizedBox(
-                                  height: 5,),
-                                const LinearProgressIndicator(),
-                              ],
-                            ),
+                          const SizedBox(
+                            width: 8,
                           ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        if(editProfileCubit.coverImage !=null)
-                          Expanded(
-                            child: Column(
-                              children: [
-                                OutlinedButton(
-                                    onPressed: (){
-                                      editProfileCubit.uploadCoverImage(name: _nameController.text, phone: _phoneController.text, bio: _bioController.text);
+                          if(editProfileCubit.coverImage !=null)
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  OutlinedButton(
+                                      onPressed: (){
+                                        editProfileCubit.uploadCoverImage(name: _nameController.text, phone: _phoneController.text, bio: _bioController.text);
 
-                                    }, child: const Text("UPLOAD COVER")),
-                                const SizedBox(
-                                  height: 5,),
-                                const LinearProgressIndicator(),
-                              ],
+                                      }, child: const Text("UPLOAD COVER")),
+                                  const SizedBox(
+                                    height: 5,),
+                                  const LinearProgressIndicator(),
+                                ],
+                              ),
                             ),
-                          ),
-                      ],
-                    ),
-                  if(editProfileCubit.profileImage !=null || editProfileCubit.coverImage !=null)
-                    const SizedBox(height: 20,),
-                  const SizedBox(
-                    height: 10,),
-                  TextFormField(
-                    controller: _nameController,
-                    keyboardType: TextInputType.name,
-                    validator: (v){
-                      if(v!.isEmpty){
-                        return "Name can/'t be empty";
-                      }
-                      else {
-                        return null;}
-                    },
-                    decoration: InputDecoration(
-                      label: const Text("Name"),
-                      prefixIcon: const Icon(Icons.person),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0.0)
+                        ],
+                      ),
+                    if(editProfileCubit.profileImage !=null || editProfileCubit.coverImage !=null)
+                      const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 10,),
+                    TextFormField(
+                      controller: _nameController,
+                      keyboardType: TextInputType.name,
+                      validator: (v){
+                        if(v!.isEmpty){
+                          return "Name can/'t be empty";
+                        }
+                        else {
+                          return null;}
+                      },
+                      decoration: InputDecoration(
+                        label: const Text("Name"),
+                        prefixIcon: const Icon(Icons.person),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0.0)
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,),
-                  TextFormField(
-                    controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    validator: (v){
-                      if(v!.isEmpty){
-                        return "Phone can/'t be empty";
-                      }
-                      else {
-                        return null;}
-                    },
-                    decoration: InputDecoration(
-                      label: const Text("Phone"),
-                      prefixIcon: const Icon(Icons.phone),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0.0)
+                    const SizedBox(
+                      height: 10,),
+                    TextFormField(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
+                      validator: (v){
+                        if(v!.isEmpty){
+                          return "Phone can/'t be empty";
+                        }
+                        else {
+                          return null;}
+                      },
+                      decoration: InputDecoration(
+                        label: const Text("Phone"),
+                        prefixIcon: const Icon(Icons.phone),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0.0)
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,),
-                  TextFormField(
-                    controller: _bioController,
-                    keyboardType: TextInputType.text,
-                    validator: (v){
-                      if(v!.isEmpty){
-                        return "Bio can/'t be empty";
-                      }
-                      else {
-                        return null;}
-                    },
-                    decoration: InputDecoration(
-                      label: const Text("Bio"),
-                      prefixIcon: const Icon(Icons.insert_drive_file_outlined),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0.0)
+                    const SizedBox(
+                      height: 10,),
+                    TextFormField(
+                      controller: _bioController,
+                      keyboardType: TextInputType.text,
+                      validator: (v){
+                        if(v!.isEmpty){
+                          return "Bio can/'t be empty";
+                        }
+                        else {
+                          return null;}
+                      },
+                      decoration: InputDecoration(
+                        label: const Text("Bio"),
+                        prefixIcon: const Icon(Icons.insert_drive_file_outlined),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0.0)
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        );
+          );
+        }
+        /// Case 2
+        else if (state is EditProfileGetUserErrorState){
+          return const Center(child: Text("Make sure you have an internet connection"),);
+        }
+        /// Case 3
+        else {
+          return const Center(child: CircularProgressIndicator());
+        }
+
       },
     ),
     );

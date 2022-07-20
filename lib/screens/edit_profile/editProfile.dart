@@ -215,11 +215,17 @@ class EditProfileScreen extends StatelessWidget{
         }
         /// Case 2
         else if (state is EditProfileGetUserErrorState){
-          return const Center(child: Text("Make sure you have an internet connection"),);
+          return Scaffold(
+            appBar: AppBar(),
+            body: const Center(child: Text("Make sure you have an internet connection"),),
+          );
         }
         /// Case 3
         else {
-          return const Center(child: CircularProgressIndicator());
+          return Scaffold(
+            appBar: AppBar(),
+            body: const Center(child: CircularProgressIndicator()),
+          );
         }
 
       },

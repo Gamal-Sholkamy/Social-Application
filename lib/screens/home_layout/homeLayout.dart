@@ -14,7 +14,7 @@ class HomeLayout extends StatelessWidget{
    return BlocConsumer<HomeLayoutCubit,HomeLayoutStates>(
        listener: (context,state){
          if(state is HomeLayoutNewPostState){
-           Navigator.push(context, MaterialPageRoute(builder: (context)=>const NewPostScreen()));
+           Navigator.push(context, MaterialPageRoute(builder: (context)=> NewPostScreen()));
          }
        },
       builder: (context,state){

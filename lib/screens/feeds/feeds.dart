@@ -55,7 +55,7 @@ class FeedsScreen extends StatelessWidget {
              ),
              floatingActionButton: FloatingActionButton(
                onPressed: (){
-                 Navigator.push(context, MaterialPageRoute(builder: (context)=>const NewPostScreen()));
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=> NewPostScreen()));
                },
                child:  Icon(Icons.add_comment_rounded,color: Theme.of(context).scaffoldBackgroundColor,),
              ),

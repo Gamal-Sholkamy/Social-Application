@@ -18,7 +18,7 @@ class EditProfileScreen extends StatelessWidget{
     child: BlocConsumer<EditProfileCubit,EditProfileStates>(
       listener: (context,state){},
       builder: (context,state){
-        /// Case 1
+        ///  Case 1   ///
         if (state is EditProfileGetUserSuccessState){
           final EditProfileCubit editProfileCubit=EditProfileCubit.get(context);
           UserModel model=editProfileCubit.userModel!;
@@ -213,14 +213,14 @@ class EditProfileScreen extends StatelessWidget{
             ),
           );
         }
-        /// Case 2
+        ///  Case 2   ///
         else if (state is EditProfileGetUserErrorState){
           return Scaffold(
             appBar: AppBar(),
             body: const Center(child: Text("Make sure you have an internet connection"),),
           );
         }
-        /// Case 3
+        ///  Case 3  ///
         else {
           return Scaffold(
             appBar: AppBar(),

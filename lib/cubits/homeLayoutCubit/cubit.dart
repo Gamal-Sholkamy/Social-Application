@@ -40,7 +40,8 @@ void changeCurrentIndex(int index)
     emit(HomeLayoutChangeBottomNavIndexState());
 
 }
-///////
+/// Posts ///
+
 
 
 

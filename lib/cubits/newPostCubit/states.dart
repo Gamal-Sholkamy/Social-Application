@@ -30,3 +30,4 @@ class CreatePostPostImageUploadErrorState extends CreatePostStates{
 }
 
 class CreatePostRemovePostImageState extends CreatePostStates{}
+

@@ -9,3 +9,9 @@ class HomeLayoutGetUserErrorState extends HomeLayoutStates{
 class HomeLayoutChangeBottomNavIndexState extends HomeLayoutStates{}
 class HomeLayoutNewPostState extends HomeLayoutStates{}
 
+class HomeLayoutGetPostLoadingState extends HomeLayoutStates{}
+class HomeLayoutGetPostSuccessState extends HomeLayoutStates{}
+class HomeLayoutGetPostErrorState extends HomeLayoutStates{
+  final String error;
+  HomeLayoutGetPostErrorState(this.error);
+}

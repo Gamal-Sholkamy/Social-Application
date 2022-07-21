@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_application/cubits/feedsCubit/cubit.dart';
 import 'package:social_application/cubits/homeLayoutCubit/states.dart';
 import 'package:social_application/models/user_model.dart';
 import 'package:social_application/network/end_points.dart';
@@ -32,10 +33,12 @@ void getUserData(){
 int currentIndex=0;
 List<Widget> screens=[const FeedsScreen(),const ChatsScreen(),const UsersScreen(),const SettingsScreen()];
 List<String> titles=["Home","Chats","Users","Settings"];
-void changeCurrentIndex(int index)
+void changeCurrentIndex(context,int index)
 {
 
-
+if(index==1){
+  FeedsCubit.get(context).getUsers();
+}
     currentIndex=index;
     emit(HomeLayoutChangeBottomNavIndexState());
 

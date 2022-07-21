@@ -16,3 +16,23 @@ class FeedsGetPostsErrorState extends FeedsStates{
 }
 
 
+class FeedsLikePostLoadingState extends FeedsStates{}
+class FeedsLikePostSuccessState extends FeedsStates{}
+class FeedsLikePostErrorState extends FeedsStates{
+  final String error;
+  FeedsLikePostErrorState(this.error);
+}
+
+class FeedsCommentOnPostLoadingState extends FeedsStates{}
+class FeedsCommentOnPostSuccessState extends FeedsStates{}
+class FeedsCommentOnPostErrorState extends FeedsStates{
+  final String error;
+  FeedsCommentOnPostErrorState(this.error);
+}
+
+class FeedsGetUsersLoadingState extends FeedsStates{}
+class FeedsGetUsersSuccessState extends FeedsStates{}
+class FeedsGetUsersErrorState extends FeedsStates{
+  final String error;
+  FeedsGetUsersErrorState(this.error);
+}

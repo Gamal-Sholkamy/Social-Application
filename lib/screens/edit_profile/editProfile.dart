@@ -14,8 +14,7 @@ class EditProfileScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (BuildContext context )=>EditProfileCubit()..getUserProfileData(),
-    child: BlocConsumer<EditProfileCubit,EditProfileStates>(
+  return  BlocConsumer<EditProfileCubit,EditProfileStates>(
       listener: (context,state){},
       builder: (context,state){
         ///  Case 1   ///
@@ -229,7 +228,7 @@ class EditProfileScreen extends StatelessWidget{
         }
 
       },
-    ),
+
     );
 
   }

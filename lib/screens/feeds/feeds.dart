@@ -50,7 +50,7 @@ class FeedsScreen extends StatelessWidget {
                      ListView.separated(
                          physics:const NeverScrollableScrollPhysics() ,
                          shrinkWrap: true,
-                         itemBuilder: (context,index)=>buildPostItem(context,feedsCubit.posts[index]),
+                         itemBuilder: (context,index)=>buildPostItem(context,feedsCubit.posts[index],index),
                          separatorBuilder: (context,index)=>const SizedBox(height: 8,),
                          itemCount: feedsCubit.posts.length)
                    ],
@@ -75,7 +75,7 @@ class FeedsScreen extends StatelessWidget {
 
 
 
-  Widget buildPostItem(context,PostModel postModel)=>Card (
+  Widget buildPostItem(context,PostModel postModel,index)=>Card (
     elevation: 2.0,
     margin: const EdgeInsets.symmetric(horizontal: 3),
     clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -195,12 +195,12 @@ class FeedsScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
-            children: const [
-              Icon(Icons.favorite_outline),
-              Text("1450"),
-              Spacer(),
-              Icon(Icons.comment),
-              Text("320 "),
+            children:  [
+              const Icon(Icons.favorite_outline),
+              Text("${FeedsCubit.get(context).likes[index]}"),
+              const Spacer(),
+              const Icon(Icons.comment),
+              const Text("320 "),
             ],
           ),
         ),
@@ -213,7 +213,9 @@ class FeedsScreen extends StatelessWidget {
               children: [
 
                 InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    FeedsCubit.get(context).likePost(FeedsCubit.get(context).postsID[index]);
+                  },
                   child: Row(
                     children: const[
                       Icon(Icons.favorite_outline),

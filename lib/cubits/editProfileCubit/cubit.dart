@@ -63,6 +63,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
     putFile(profileImage!).
     then((value) {
       value.ref.getDownloadURL().then((value)  {
+        getUserProfileData();
         emit(EditProfileUploadProfileImageSuccessState());
 
         updateUser(
@@ -93,6 +94,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
     putFile(coverImage!).
     then((value) {
       value.ref.getDownloadURL().then((value)  {
+        getUserProfileData();
         emit(EditProfileUploadCoverImageSuccessState());
         updateUser(
           name: name ,

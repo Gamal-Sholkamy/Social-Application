@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_application/cubits/editProfileCubit/cubit.dart';
+import 'package:social_application/cubits/editProfileCubit/states.dart';
 import 'package:social_application/cubits/homeLayoutCubit/cubit.dart';
 import 'package:social_application/cubits/homeLayoutCubit/states.dart';
 import 'package:social_application/models/user_model.dart';
@@ -11,10 +13,10 @@ class SettingsScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeLayoutCubit,HomeLayoutStates>(
+    return BlocConsumer<EditProfileCubit,EditProfileStates>(
         listener: (context,state){},
         builder: (context,state){
-          final UserModel? model=HomeLayoutCubit.get(context).userModel;
+          final UserModel model=EditProfileCubit.get(context).userModel!;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -35,7 +37,7 @@ class SettingsScreen extends StatelessWidget{
                               topRight: Radius.circular(12),
                             ),
                             image: DecorationImage(
-                                image:NetworkImage("${model?.cover}"),
+                                image:NetworkImage("${model.cover}"),
                                 fit: BoxFit.cover),
                           ),
                         ),
@@ -45,7 +47,7 @@ class SettingsScreen extends StatelessWidget{
                         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                         child:  CircleAvatar(
                           radius: 40,
-                          backgroundImage: NetworkImage("${model?.image}"),
+                          backgroundImage: NetworkImage("${model.image}"),
                           //child: Image(image: AssetImage("assets/images/6.jpg"),)
                         ),
                       ),
@@ -55,9 +57,9 @@ class SettingsScreen extends StatelessWidget{
                 const SizedBox(
                   height: 4,),
                 Text(
-                  "${model?.name}",style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 22),),
+                  "${model.name}",style: Theme.of(context).textTheme.bodyText1?.copyWith(fontSize: 22),),
                 Text(
-                  "${model?.bio}",style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 18),),
+                  "${model.bio}",style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 18),),
                 const SizedBox(
                   height: 20,),
                 Row(
